@@ -2,26 +2,30 @@ import { CalculatorInputDimensions, CalculatorInputArea, CalculationResult, Fram
 import { CALCULATION_CONSTANTS, FRAME_SIZES, PLATFORM_LENGTHS } from "./constants";
 
 export function calculateFromDimensions(input: CalculatorInputDimensions): CalculationResult {
-  const { length, height, frameSize, platformLength, workLevels } = input;
+  const { length, height, frameSize, platformLength, workLevels, buildingSides } = input;
   
-  // Calculate approximate area based on wall length and height
-  const area = length * height;
+  // Calculate approximate area based on wall length and height (multiplied by sides)
+  const singleWallArea = length * height;
+  const totalArea = singleWallArea * buildingSides;
   
   return calculateScaffolding(
-    area, 
+    totalArea, 
     length, 
     height, 
     frameSize, 
     platformLength, 
-    workLevels
+    workLevels,
+    buildingSides
   );
 }
 
 export function calculateFromArea(input: CalculatorInputArea): CalculationResult {
-  const { area, height, frameSize, platformLength, workLevels } = input;
+  const { area, height, frameSize, platformLength, workLevels, buildingSides } = input;
   
   // Approximating length for wall length
-  const approximatedLength = area / height;
+  // Divide total area by number of sides to get area per side
+  const areaPerSide = area / buildingSides;
+  const approximatedLength = areaPerSide / height;
   
   return calculateScaffolding(
     area, 
@@ -29,7 +33,8 @@ export function calculateFromArea(input: CalculatorInputArea): CalculationResult
     height, 
     frameSize, 
     platformLength, 
-    workLevels
+    workLevels,
+    buildingSides
   );
 }
 
@@ -39,7 +44,8 @@ function calculateScaffolding(
   height: number, 
   frameSize: FrameSize, 
   platformLength: PlatformLength, 
-  workLevels: WorkLevel
+  workLevels: WorkLevel,
+  buildingSides: number = 1
 ): CalculationResult {
   const scaffoldType = "mason-frame";
   const constants = CALCULATION_CONSTANTS[scaffoldType];
@@ -49,11 +55,13 @@ function calculateScaffolding(
   // Get width from the frame selection
   const frameWidth = frameSizeDetails.dimensions.width / 100; // Convert to meters
   
-  // Calculate perimeter (just the length for wall scaffolding)
-  const perimeter = wallLength;
+  // Calculate total perimeter based on number of sides
+  const perimeter = wallLength * buildingSides;
   
   // Calculate quantities
-  const framesCount = Math.ceil(wallLength * constants.framesPerMeter);
+  const framesPerSide = Math.ceil(wallLength * constants.framesPerMeter);
+  const framesCount = framesPerSide * buildingSides;
+  
   const crossBracesCount = Math.ceil(framesCount * constants.crossBracesPerFrame);
   const guardrailsCount = Math.ceil(perimeter * constants.guardrailsPerMeter * workLevels);
   const basePlatesCount = Math.ceil(framesCount * constants.basePlatesPerFrame);
@@ -61,7 +69,7 @@ function calculateScaffolding(
   const screwCount = Math.ceil(framesCount * constants.screwJacksPerFrame);
   const toeboardsCount = Math.ceil(perimeter * constants.toeboardsPerMeter * workLevels);
   const outriggersCount = Math.ceil(perimeter * constants.outriggersPerSide);
-  const laddersCount = Math.ceil(constants.laddersPerLevel * workLevels);
+  const laddersCount = Math.ceil(constants.laddersPerLevel * workLevels * (buildingSides > 1 ? buildingSides / 2 : 1));
   
   // Calculate weight
   const totalWeight = 

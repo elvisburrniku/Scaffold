@@ -113,6 +113,7 @@ export default function CalculatorForm({
       frameSize: "mason-frame-152x152",
       platformLength: "platform-244",
       workLevels: 1,
+      buildingSides: 4,
     },
   });
 
@@ -267,6 +268,33 @@ export default function CalculatorForm({
                 )}
               />
               
+              <FormField
+                control={dimensionsForm.control}
+                name="buildingSides"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Building Sides</FormLabel>
+                    <Select 
+                      onValueChange={(value) => field.onChange(parseInt(value))} 
+                      defaultValue={field.value.toString()}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select number of sides" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="1">1 side (single wall)</SelectItem>
+                        <SelectItem value="2">2 sides (L-shaped corner)</SelectItem>
+                        <SelectItem value="3">3 sides (U-shaped structure)</SelectItem>
+                        <SelectItem value="4">4 sides (complete perimeter)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
               <div className="md:col-span-2">
                 <Button 
                   type="submit" 
@@ -402,6 +430,33 @@ export default function CalculatorForm({
                         <SelectItem value="3">3 working levels</SelectItem>
                         <SelectItem value="4">4 working levels</SelectItem>
                         <SelectItem value="5">5 working levels</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={areaForm.control}
+                name="buildingSides"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Building Sides</FormLabel>
+                    <Select 
+                      onValueChange={(value) => field.onChange(parseInt(value))} 
+                      defaultValue={field.value.toString()}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select number of sides" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="1">1 side (single wall)</SelectItem>
+                        <SelectItem value="2">2 sides (L-shaped corner)</SelectItem>
+                        <SelectItem value="3">3 sides (U-shaped structure)</SelectItem>
+                        <SelectItem value="4">4 sides (complete perimeter)</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
