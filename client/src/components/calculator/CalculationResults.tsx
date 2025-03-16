@@ -123,6 +123,7 @@ export default function CalculationResults({ results }: CalculationResultsProps)
               <p><span className="font-medium">Frame Size:</span> {results.frameSize}</p>
               <p><span className="font-medium">Platform Type:</span> {results.platformLength}</p>
               <p><span className="font-medium">Working Levels:</span> {results.workLevels}</p>
+              <p><span className="font-medium">Building Sides:</span> {results.buildingSides || 1}</p>
               <p><span className="font-medium">Safety Factor:</span> {results.safetyFactor}</p>
             </div>
           </div>

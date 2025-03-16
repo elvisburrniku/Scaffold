@@ -113,6 +113,7 @@ function calculateScaffolding(
     frameSize: frameSizeDetails.name,
     platformLength: platformDetails.name,
     workLevels: workLevels,
+    buildingSides: buildingSides,
     safetyFactor: constants.safetyFactor
   };
 }

@@ -91,5 +91,6 @@ export type CalculationResult = {
   frameSize: string;
   platformLength: string;
   workLevels: number;
+  buildingSides: number;
   safetyFactor: number;
 };
