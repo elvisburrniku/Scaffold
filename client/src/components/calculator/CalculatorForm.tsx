@@ -41,11 +41,13 @@ const dimensionsSchema = z.object({
     "mason-frame-193x152",
     "mason-frame-193x91", 
     "mason-frame-193x107", 
-    "mason-frame-198x152"
+    "mason-frame-198x152",
+    "mason-frame-220x70"
   ] as const),
   platformLength: z.enum([
     "platform-213", 
     "platform-244", 
+    "platform-250",
     "platform-305"
   ] as const),
   workLevels: z.coerce.number().min(1).max(5)
@@ -61,11 +63,13 @@ const areaSchema = z.object({
     "mason-frame-193x152",
     "mason-frame-193x91", 
     "mason-frame-193x107", 
-    "mason-frame-198x152"
+    "mason-frame-198x152",
+    "mason-frame-220x70"
   ] as const),
   platformLength: z.enum([
     "platform-213", 
     "platform-244", 
+    "platform-250",
     "platform-305"
   ] as const),
   workLevels: z.coerce.number().min(1).max(5)
@@ -197,6 +201,7 @@ export default function CalculatorForm({
                         <SelectItem value="mason-frame-193x91">193.04 cm x 91.44 cm</SelectItem>
                         <SelectItem value="mason-frame-193x107">193.04 cm x 106.68 cm</SelectItem>
                         <SelectItem value="mason-frame-198x152">198.12 cm x 152.4 cm</SelectItem>
+                        <SelectItem value="mason-frame-220x70">220 cm x 0.70 cm</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -222,6 +227,7 @@ export default function CalculatorForm({
                       <SelectContent>
                         <SelectItem value="platform-213">213.36 cm Plywood Platform</SelectItem>
                         <SelectItem value="platform-244">243.84 cm Plywood Platform</SelectItem>
+                        <SelectItem value="platform-250">250 cm Plywood Platform</SelectItem>
                         <SelectItem value="platform-305">304.8 cm Plywood Platform</SelectItem>
                       </SelectContent>
                     </Select>
@@ -337,6 +343,7 @@ export default function CalculatorForm({
                         <SelectItem value="mason-frame-193x91">193.04 cm x 91.44 cm</SelectItem>
                         <SelectItem value="mason-frame-193x107">193.04 cm x 106.68 cm</SelectItem>
                         <SelectItem value="mason-frame-198x152">198.12 cm x 152.4 cm</SelectItem>
+                        <SelectItem value="mason-frame-220x70">220 cm x 0.70 cm</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -362,6 +369,7 @@ export default function CalculatorForm({
                       <SelectContent>
                         <SelectItem value="platform-213">213.36 cm Plywood Platform</SelectItem>
                         <SelectItem value="platform-244">243.84 cm Plywood Platform</SelectItem>
+                        <SelectItem value="platform-250">250 cm Plywood Platform</SelectItem>
                         <SelectItem value="platform-305">304.8 cm Plywood Platform</SelectItem>
                       </SelectContent>
                     </Select>
