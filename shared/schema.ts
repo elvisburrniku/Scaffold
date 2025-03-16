@@ -56,6 +56,7 @@ export type CalculatorInputDimensions = {
   frameSize: FrameSize;
   platformLength: PlatformLength;
   workLevels: WorkLevel;
+  buildingSides: number;
 };
 
 export type CalculatorInputArea = {
@@ -64,6 +65,7 @@ export type CalculatorInputArea = {
   frameSize: FrameSize;
   platformLength: PlatformLength;
   workLevels: WorkLevel;
+  buildingSides: number;
 };
 
 export type ScaffoldingComponent = {

@@ -50,7 +50,8 @@ const dimensionsSchema = z.object({
     "platform-250",
     "platform-305"
   ] as const),
-  workLevels: z.coerce.number().min(1).max(5)
+  workLevels: z.coerce.number().min(1).max(5),
+  buildingSides: z.coerce.number().min(1).max(4)
 });
 
 const areaSchema = z.object({
@@ -72,7 +73,8 @@ const areaSchema = z.object({
     "platform-250",
     "platform-305"
   ] as const),
-  workLevels: z.coerce.number().min(1).max(5)
+  workLevels: z.coerce.number().min(1).max(5),
+  buildingSides: z.coerce.number().min(1).max(4)
 });
 
 type DimensionsFormData = z.infer<typeof dimensionsSchema>;
@@ -98,6 +100,7 @@ export default function CalculatorForm({
       frameSize: "mason-frame-152x152",
       platformLength: "platform-244",
       workLevels: 1,
+      buildingSides: 4,
     },
   });
 
