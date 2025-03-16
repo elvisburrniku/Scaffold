@@ -194,14 +194,14 @@ export default function CalculatorForm({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="mason-frame-91x152">91.44 cm x 152.4 cm</SelectItem>
-                        <SelectItem value="mason-frame-152x152">152.4 cm x 152.4 cm</SelectItem>
-                        <SelectItem value="mason-frame-183x152">182.88 cm × 152.40 cm</SelectItem>
-                        <SelectItem value="mason-frame-193x152">193.04 cm x 152.4 cm</SelectItem>
-                        <SelectItem value="mason-frame-193x91">193.04 cm x 91.44 cm</SelectItem>
-                        <SelectItem value="mason-frame-193x107">193.04 cm x 106.68 cm</SelectItem>
-                        <SelectItem value="mason-frame-198x152">198.12 cm x 152.4 cm</SelectItem>
-                        <SelectItem value="mason-frame-220x70">220 cm x 0.70 cm</SelectItem>
+                        <SelectItem value="mason-frame-91x152">Mason Frame 91.44 cm x 152.4 cm</SelectItem>
+                        <SelectItem value="mason-frame-152x152">Mason Frame 152.4 x 152.4 cm</SelectItem>
+                        <SelectItem value="mason-frame-183x152">Mason Frame 182.88 × 152.40 cm</SelectItem>
+                        <SelectItem value="mason-frame-193x152">Mason Frame 193.04 cm x 152.4 cm</SelectItem>
+                        <SelectItem value="mason-frame-193x91">Mason Frame 193.04 x 91.44 cm</SelectItem>
+                        <SelectItem value="mason-frame-193x107">Mason Frame 193.04 cm x 106.68 cm</SelectItem>
+                        <SelectItem value="mason-frame-198x152">Mason Frame 198.12 x 152.4 cm</SelectItem>
+                        <SelectItem value="mason-frame-220x70">Mason Frame 220 x 0.70 cm</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -336,14 +336,14 @@ export default function CalculatorForm({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="mason-frame-91x152">91.44 cm x 152.4 cm</SelectItem>
-                        <SelectItem value="mason-frame-152x152">152.4 cm x 152.4 cm</SelectItem>
-                        <SelectItem value="mason-frame-183x152">182.88 cm × 152.40 cm</SelectItem>
-                        <SelectItem value="mason-frame-193x152">193.04 cm x 152.4 cm</SelectItem>
-                        <SelectItem value="mason-frame-193x91">193.04 cm x 91.44 cm</SelectItem>
-                        <SelectItem value="mason-frame-193x107">193.04 cm x 106.68 cm</SelectItem>
-                        <SelectItem value="mason-frame-198x152">198.12 cm x 152.4 cm</SelectItem>
-                        <SelectItem value="mason-frame-220x70">220 cm x 0.70 cm</SelectItem>
+                        <SelectItem value="mason-frame-91x152">Mason Frame 91.44 cm x 152.4 cm</SelectItem>
+                        <SelectItem value="mason-frame-152x152">Mason Frame 152.4 x 152.4 cm</SelectItem>
+                        <SelectItem value="mason-frame-183x152">Mason Frame 182.88 × 152.40 cm</SelectItem>
+                        <SelectItem value="mason-frame-193x152">Mason Frame 193.04 cm x 152.4 cm</SelectItem>
+                        <SelectItem value="mason-frame-193x91">Mason Frame 193.04 x 91.44 cm</SelectItem>
+                        <SelectItem value="mason-frame-193x107">Mason Frame 193.04 cm x 106.68 cm</SelectItem>
+                        <SelectItem value="mason-frame-198x152">Mason Frame 198.12 x 152.4 cm</SelectItem>
+                        <SelectItem value="mason-frame-220x70">Mason Frame 220 x 0.70 cm</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
