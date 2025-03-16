@@ -1,4 +1,4 @@
-import { ScaffoldingType } from "@shared/schema";
+import { FrameSize, PlatformLength, ScaffoldingType } from "@shared/schema";
 
 export const FEATURES = [
   {
@@ -33,135 +33,125 @@ export const FEATURES = [
   }
 ];
 
-export const SCAFFOLDING_TYPES = [
-  {
-    name: "System Scaffolding",
-    description: "Modular system with standardized components that connect easily, providing high versatility and quick assembly times.",
-    bestFor: "Complex structures, irregular facades",
-    assemblySpeed: "Fast",
-    adaptability: "High",
-    image: "https://images.unsplash.com/photo-1578575436955-ef29da568c6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80"
+export const FRAME_SIZES: Record<FrameSize, { 
+  name: string,
+  description: string, 
+  dimensions: { 
+    width: number, 
+    height: number
+  }, 
+  weightKg: number
+}> = {
+  "mason-frame-91x152": {
+    name: "Mason Frame 91.44 cm x 152.4 cm",
+    description: "Compact mason frame ideal for limited-space applications",
+    dimensions: { width: 91.44, height: 152.4 },
+    weightKg: 15.2
   },
-  {
-    name: "Frame Scaffolding",
-    description: "Prefabricated frames connected by cross braces, offering stability and straightforward assembly for standard projects.",
-    bestFor: "Residential, straightforward facades",
-    assemblySpeed: "Medium",
-    adaptability: "Medium",
-    image: "https://images.unsplash.com/photo-1621905251918-48416bd8575a?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80"
+  "mason-frame-152x152": {
+    name: "Mason Frame 152.4 x 152.4 cm",
+    description: "Square mason frame with versatile application potential",
+    dimensions: { width: 152.4, height: 152.4 },
+    weightKg: 18.5
   },
-  {
-    name: "Tube and Coupler",
-    description: "Highly adaptable system using individual tubes connected with couplers, ideal for complex or unusual structures.",
-    bestFor: "Complex, non-standard structures",
-    assemblySpeed: "Slow",
-    adaptability: "Very High",
-    image: "https://images.unsplash.com/photo-1541855492-581f618f69a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80"
+  "mason-frame-183x152": {
+    name: "Mason Frame 182.88 × 152.40 cm",
+    description: "Extended width mason frame for larger spans",
+    dimensions: { width: 182.88, height: 152.4 },
+    weightKg: 22.1
+  },
+  "mason-frame-193x152": {
+    name: "Mason Frame 193.04 cm x 152.4 cm",
+    description: "Wide mason frame for maximum horizontal coverage",
+    dimensions: { width: 193.04, height: 152.4 },
+    weightKg: 23.4
+  },
+  "mason-frame-193x91": {
+    name: "Mason Frame 193.04 x 91.44 cm",
+    description: "Low-height wide-span mason frame",
+    dimensions: { width: 193.04, height: 91.44 },
+    weightKg: 19.8
+  },
+  "mason-frame-193x107": {
+    name: "Mason Frame 193.04 cm x 106.68 cm",
+    description: "Mid-height wide-span mason frame",
+    dimensions: { width: 193.04, height: 106.68 },
+    weightKg: 21.2
+  },
+  "mason-frame-198x152": {
+    name: "Mason Frame 198.12 x 152.4 cm",
+    description: "Extra-wide mason frame for maximum coverage",
+    dimensions: { width: 198.12, height: 152.4 },
+    weightKg: 24.3
   }
-];
+};
 
-// Constants for calculation ratios based on scaffolding type
+export const PLATFORM_LENGTHS: Record<PlatformLength, {
+  name: string,
+  description: string,
+  lengthCm: number,
+  widthCm: number,
+  weightKg: number
+}> = {
+  "platform-213": {
+    name: "213.36 cm Plywood Platform",
+    description: "Standard-length platform for most applications",
+    lengthCm: 213.36,
+    widthCm: 60,
+    weightKg: 15.5
+  },
+  "platform-244": {
+    name: "243.84 cm Plywood Platform",
+    description: "Extended-length platform for medium spans",
+    lengthCm: 243.84,
+    widthCm: 60,
+    weightKg: 17.8
+  },
+  "platform-305": {
+    name: "304.8 cm Plywood Platform",
+    description: "Maximum-length platform for long spans",
+    lengthCm: 304.8,
+    widthCm: 60,
+    weightKg: 22.3
+  }
+};
+
 export const CALCULATION_CONSTANTS: Record<ScaffoldingType, {
-  standardsPerArea: number;
-  standardsSpecs: string;
-  ledgersPerArea: number;
-  ledgersSpecs: string;
-  transomPerArea: number;
-  transomSpecs: string;
-  guardrailsPerPerimeter: number;
-  guardrailsSpecs: string;
-  toeboardsPerPerimeter: number;
-  toeboardsSpecs: string;
-  platformsPerArea: number;
-  platformsSpecs: string;
-  couplersPerStandard: number;
-  couplersSpecs: string;
+  framesPerMeter: number;
+  crossBracesPerFrame: number;
+  guardrailsPerMeter: number;
+  basePlatesPerFrame: number;
+  platformsPerMeter: number;
+  screwJacksPerFrame: number;
+  toeboardsPerMeter: number;
+  outriggersPerSide: number;
+  laddersPerLevel: number;
   weightPerComponent: Record<string, number>;
   loadCapacity: number;
   safetyFactor: number;
 }> = {
-  "system": {
-    standardsPerArea: 0.175, // 1 standard per 5.7m²
-    standardsSpecs: "3m x 48.3mm",
-    ledgersPerArea: 0.28, // 1 ledger per 3.5m²
-    ledgersSpecs: "2.4m x 48.3mm",
-    transomPerArea: 0.22, // 1 transom per 4.5m²
-    transomSpecs: "1.2m",
-    guardrailsPerPerimeter: 0.8, // 2 per side with adjustments
-    guardrailsSpecs: "2.4m",
-    toeboardsPerPerimeter: 0.8, // 1 per side with adjustments
-    toeboardsSpecs: "2.4m x 150mm",
-    platformsPerArea: 0.19, // 1 platform per 5.2m²
-    platformsSpecs: "2.4m x 0.6m",
-    couplersPerStandard: 3, // Average number of couplers per standard
-    couplersSpecs: "Standard",
+  "mason-frame": {
+    framesPerMeter: 0.4,  // Frames per meter of wall length
+    crossBracesPerFrame: 1.0,  // Cross braces per frame
+    guardrailsPerMeter: 0.85,  // Guardrails per meter of wall length
+    basePlatesPerFrame: 2.0,   // Base plates per frame
+    platformsPerMeter: 0.5,    // Platforms per meter of wall length
+    screwJacksPerFrame: 2.0,   // Screw jacks per frame
+    toeboardsPerMeter: 0.5,    // Toe boards per meter of wall length
+    outriggersPerSide: 0.15,   // Outriggers per meter of wall length
+    laddersPerLevel: 0.5,      // Ladders per level (typically 1 ladder per 2 sections)
     weightPerComponent: {
-      standard: 15, // kg
-      ledger: 7,
-      transom: 5,
-      guardRail: 6,
-      toeboard: 4,
+      frame: 20,         // Average weight in kg
+      crossBrace: 5,
+      guardrail: 4,
+      basePlate: 2.5,
       platform: 20,
-      coupler: 1.2,
-      basePlate: 2
+      screwJack: 3,
+      toeboard: 4,
+      outrigger: 8,
+      ladder: 15
     },
-    loadCapacity: 750, // kg/m²
-    safetyFactor: 1.5
-  },
-  "frame": {
-    standardsPerArea: 0.2, // 1 standard per 5m²
-    standardsSpecs: "2.5m x 60mm",
-    ledgersPerArea: 0.3, // 1 ledger per 3.3m²
-    ledgersSpecs: "2.4m x 48.3mm",
-    transomPerArea: 0.25, // 1 transom per 4m²
-    transomSpecs: "1.2m",
-    guardrailsPerPerimeter: 0.85, // 2 per side with adjustments
-    guardrailsSpecs: "2.4m",
-    toeboardsPerPerimeter: 0.85,
-    toeboardsSpecs: "2.4m x 150mm",
-    platformsPerArea: 0.2, // 1 platform per 5m²
-    platformsSpecs: "2.4m x 0.6m",
-    couplersPerStandard: 2.5,
-    couplersSpecs: "Fixed Frame",
-    weightPerComponent: {
-      standard: 18, // kg
-      ledger: 7.5,
-      transom: 5.5,
-      guardRail: 6.5,
-      toeboard: 4.5,
-      platform: 22,
-      coupler: 1.5,
-      basePlate: 2.5
-    },
-    loadCapacity: 675, // kg/m²
+    loadCapacity: 675,  // kg/m²
     safetyFactor: 1.4
-  },
-  "tube": {
-    standardsPerArea: 0.22, // 1 standard per 4.5m²
-    standardsSpecs: "3m x 48.3mm",
-    ledgersPerArea: 0.33, // 1 ledger per 3m²
-    ledgersSpecs: "3m x 48.3mm",
-    transomPerArea: 0.28, // 1 transom per 3.5m²
-    transomSpecs: "1.5m",
-    guardrailsPerPerimeter: 0.9, // 2 per side with adjustments
-    guardrailsSpecs: "3m",
-    toeboardsPerPerimeter: 0.9,
-    toeboardsSpecs: "3m x 150mm",
-    platformsPerArea: 0.2, // 1 platform per 5m²
-    platformsSpecs: "3m x 0.6m",
-    couplersPerStandard: 4.5, // More couplers for tube and coupler systems
-    couplersSpecs: "Swivel",
-    weightPerComponent: {
-      standard: 16, // kg
-      ledger: 8,
-      transom: 6,
-      guardRail: 7,
-      toeboard: 5,
-      platform: 24,
-      coupler: 1.8,
-      basePlate: 3
-    },
-    loadCapacity: 600, // kg/m²
-    safetyFactor: 1.6
   }
 };

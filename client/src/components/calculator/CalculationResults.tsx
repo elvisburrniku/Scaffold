@@ -9,7 +9,7 @@ interface CalculationResultsProps {
 
 export default function CalculationResults({ results }: CalculationResultsProps) {
   return (
-    <div>
+    <div id="resultsSection">
       <h3 className="text-xl font-semibold mb-4">Calculation Results</h3>
       
       <div className="grid md:grid-cols-2 gap-8">
@@ -26,19 +26,19 @@ export default function CalculationResults({ results }: CalculationResultsProps)
               </thead>
               <tbody>
                 <tr className="border-b border-gray-200">
-                  <td className="py-2">Standards</td>
-                  <td className="text-right py-2">{results.standards.quantity}</td>
-                  <td className="text-right py-2 text-xs">{results.standards.specs}</td>
+                  <td className="py-2">Frames</td>
+                  <td className="text-right py-2">{results.frames.quantity}</td>
+                  <td className="text-right py-2 text-xs">{results.frames.specs}</td>
                 </tr>
                 <tr className="border-b border-gray-200">
-                  <td className="py-2">Ledgers</td>
-                  <td className="text-right py-2">{results.ledgers.quantity}</td>
-                  <td className="text-right py-2 text-xs">{results.ledgers.specs}</td>
+                  <td className="py-2">Cross Braces</td>
+                  <td className="text-right py-2">{results.crossBraces.quantity}</td>
+                  <td className="text-right py-2 text-xs">{results.crossBraces.specs}</td>
                 </tr>
                 <tr className="border-b border-gray-200">
-                  <td className="py-2">Transoms</td>
-                  <td className="text-right py-2">{results.transoms.quantity}</td>
-                  <td className="text-right py-2 text-xs">{results.transoms.specs}</td>
+                  <td className="py-2">Guardrails</td>
+                  <td className="text-right py-2">{results.guardrails.quantity}</td>
+                  <td className="text-right py-2 text-xs">{results.guardrails.specs}</td>
                 </tr>
                 <tr className="border-b border-gray-200">
                   <td className="py-2">Base Plates</td>
@@ -46,9 +46,14 @@ export default function CalculationResults({ results }: CalculationResultsProps)
                   <td className="text-right py-2 text-xs">{results.basePlates.specs}</td>
                 </tr>
                 <tr className="border-b border-gray-200">
-                  <td className="py-2">Guard Rails</td>
-                  <td className="text-right py-2">{results.guardRails.quantity}</td>
-                  <td className="text-right py-2 text-xs">{results.guardRails.specs}</td>
+                  <td className="py-2">Platforms</td>
+                  <td className="text-right py-2">{results.platforms.quantity}</td>
+                  <td className="text-right py-2 text-xs">{results.platforms.specs}</td>
+                </tr>
+                <tr className="border-b border-gray-200">
+                  <td className="py-2">Screw Jacks</td>
+                  <td className="text-right py-2">{results.screw.quantity}</td>
+                  <td className="text-right py-2 text-xs">{results.screw.specs}</td>
                 </tr>
                 <tr className="border-b border-gray-200">
                   <td className="py-2">Toe Boards</td>
@@ -56,14 +61,14 @@ export default function CalculationResults({ results }: CalculationResultsProps)
                   <td className="text-right py-2 text-xs">{results.toeBoards.specs}</td>
                 </tr>
                 <tr className="border-b border-gray-200">
-                  <td className="py-2">Platforms</td>
-                  <td className="text-right py-2">{results.platforms.quantity}</td>
-                  <td className="text-right py-2 text-xs">{results.platforms.specs}</td>
+                  <td className="py-2">Outriggers</td>
+                  <td className="text-right py-2">{results.outriggers.quantity}</td>
+                  <td className="text-right py-2 text-xs">{results.outriggers.specs}</td>
                 </tr>
                 <tr className="border-b border-gray-200">
-                  <td className="py-2">Couplers</td>
-                  <td className="text-right py-2">{results.couplers.quantity}</td>
-                  <td className="text-right py-2 text-xs">{results.couplers.specs}</td>
+                  <td className="py-2">Ladders</td>
+                  <td className="text-right py-2">{results.ladders.quantity}</td>
+                  <td className="text-right py-2 text-xs">{results.ladders.specs}</td>
                 </tr>
               </tbody>
               <tfoot>
@@ -115,7 +120,9 @@ export default function CalculationResults({ results }: CalculationResultsProps)
             <div className="bg-gray-50 rounded-lg p-4">
               <p><span className="font-medium">Dimensions:</span> {results.dimensions}</p>
               <p><span className="font-medium">Total Area:</span> {results.area} m²</p>
-              <p><span className="font-medium">Scaffolding Type:</span> {results.type}</p>
+              <p><span className="font-medium">Frame Size:</span> {results.frameSize}</p>
+              <p><span className="font-medium">Platform Type:</span> {results.platformLength}</p>
+              <p><span className="font-medium">Working Levels:</span> {results.workLevels}</p>
               <p><span className="font-medium">Safety Factor:</span> {results.safetyFactor}</p>
             </div>
           </div>

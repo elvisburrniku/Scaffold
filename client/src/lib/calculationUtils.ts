@@ -1,86 +1,110 @@
-import { CalculatorInputDimensions, CalculatorInputArea, CalculationResult } from "@shared/schema";
-import { CALCULATION_CONSTANTS } from "./constants";
+import { CalculatorInputDimensions, CalculatorInputArea, CalculationResult, FrameSize, PlatformLength, WorkLevel } from "@shared/schema";
+import { CALCULATION_CONSTANTS, FRAME_SIZES, PLATFORM_LENGTHS } from "./constants";
 
 export function calculateFromDimensions(input: CalculatorInputDimensions): CalculationResult {
-  const { length, width, height, type } = input;
-  const area = length * width;
-  return calculateScaffolding(area, height, length, width, type);
+  const { length, height, frameSize, platformLength, workLevels } = input;
+  
+  // Calculate approximate area based on wall length and height
+  const area = length * height;
+  
+  return calculateScaffolding(
+    area, 
+    length, 
+    height, 
+    frameSize, 
+    platformLength, 
+    workLevels
+  );
 }
 
 export function calculateFromArea(input: CalculatorInputArea): CalculationResult {
-  const { area, height, type } = input;
+  const { area, height, frameSize, platformLength, workLevels } = input;
   
-  // Approximating length and width for visualization purposes
-  const approximatedLength = Math.sqrt(area);
-  const approximatedWidth = area / approximatedLength;
+  // Approximating length for wall length
+  const approximatedLength = area / height;
   
-  return calculateScaffolding(area, height, approximatedLength, approximatedWidth, type);
+  return calculateScaffolding(
+    area, 
+    approximatedLength, 
+    height, 
+    frameSize, 
+    platformLength, 
+    workLevels
+  );
 }
 
 function calculateScaffolding(
   area: number, 
+  wallLength: number, 
   height: number, 
-  length: number, 
-  width: number, 
-  type: string
+  frameSize: FrameSize, 
+  platformLength: PlatformLength, 
+  workLevels: WorkLevel
 ): CalculationResult {
-  const constants = CALCULATION_CONSTANTS[type as keyof typeof CALCULATION_CONSTANTS];
-  const perimeter = 2 * (length + width);
+  const scaffoldType = "mason-frame";
+  const constants = CALCULATION_CONSTANTS[scaffoldType];
+  const frameSizeDetails = FRAME_SIZES[frameSize];
+  const platformDetails = PLATFORM_LENGTHS[platformLength];
+  
+  // Get width from the frame selection
+  const frameWidth = frameSizeDetails.dimensions.width / 100; // Convert to meters
+  
+  // Calculate perimeter (just the length for wall scaffolding)
+  const perimeter = wallLength;
   
   // Calculate quantities
-  const standardsCount = Math.ceil(area * constants.standardsPerArea * (height / 3));
-  const ledgersCount = Math.ceil(area * constants.ledgersPerArea * (height / 3));
-  const transomCount = Math.ceil(area * constants.transomPerArea * (height / 3));
-  const basePlatesCount = standardsCount; // Each standard needs a base plate
-  const guardRailsCount = Math.ceil(perimeter * constants.guardrailsPerPerimeter * Math.ceil(height / 3));
-  const toeBoardsCount = Math.ceil(perimeter * constants.toeboardsPerPerimeter * Math.ceil(height / 3));
-  const platformsCount = Math.ceil(area * constants.platformsPerArea * Math.ceil(height / 3));
-  const couplersCount = Math.ceil(standardsCount * constants.couplersPerStandard);
+  const framesCount = Math.ceil(wallLength * constants.framesPerMeter);
+  const crossBracesCount = Math.ceil(framesCount * constants.crossBracesPerFrame);
+  const guardrailsCount = Math.ceil(perimeter * constants.guardrailsPerMeter * workLevels);
+  const basePlatesCount = Math.ceil(framesCount * constants.basePlatesPerFrame);
+  const platformsCount = Math.ceil(perimeter * constants.platformsPerMeter * workLevels);
+  const screwCount = Math.ceil(framesCount * constants.screwJacksPerFrame);
+  const toeboardsCount = Math.ceil(perimeter * constants.toeboardsPerMeter * workLevels);
+  const outriggersCount = Math.ceil(perimeter * constants.outriggersPerSide);
+  const laddersCount = Math.ceil(constants.laddersPerLevel * workLevels);
   
   // Calculate weight
   const totalWeight = 
-    standardsCount * constants.weightPerComponent.standard +
-    ledgersCount * constants.weightPerComponent.ledger +
-    transomCount * constants.weightPerComponent.transom +
+    framesCount * constants.weightPerComponent.frame +
+    crossBracesCount * constants.weightPerComponent.crossBrace +
+    guardrailsCount * constants.weightPerComponent.guardrail +
     basePlatesCount * constants.weightPerComponent.basePlate +
-    guardRailsCount * constants.weightPerComponent.guardRail +
-    toeBoardsCount * constants.weightPerComponent.toeboard +
     platformsCount * constants.weightPerComponent.platform +
-    couplersCount * constants.weightPerComponent.coupler;
+    screwCount * constants.weightPerComponent.screwJack +
+    toeboardsCount * constants.weightPerComponent.toeboard +
+    outriggersCount * constants.weightPerComponent.outrigger +
+    laddersCount * constants.weightPerComponent.ladder;
   
   // Format the result
   const totalComponents = 
-    standardsCount + 
-    ledgersCount + 
-    transomCount + 
+    framesCount + 
+    crossBracesCount + 
+    guardrailsCount + 
     basePlatesCount + 
-    guardRailsCount + 
-    toeBoardsCount + 
     platformsCount + 
-    couplersCount;
-  
-  // Map scaffolding type to readable name
-  const typeName = {
-    system: "System Scaffolding",
-    frame: "Frame Scaffolding",
-    tube: "Tube and Coupler"
-  }[type];
+    screwCount + 
+    toeboardsCount + 
+    outriggersCount + 
+    laddersCount;
   
   return {
-    standards: { quantity: standardsCount, specs: constants.standardsSpecs },
-    ledgers: { quantity: ledgersCount, specs: constants.ledgersSpecs },
-    transoms: { quantity: transomCount, specs: constants.transomSpecs },
-    basePlates: { quantity: basePlatesCount, specs: "150mm" },
-    guardRails: { quantity: guardRailsCount, specs: constants.guardrailsSpecs },
-    toeBoards: { quantity: toeBoardsCount, specs: constants.toeboardsSpecs },
-    platforms: { quantity: platformsCount, specs: constants.platformsSpecs },
-    couplers: { quantity: couplersCount, specs: constants.couplersSpecs },
+    frames: { quantity: framesCount, specs: frameSizeDetails.name },
+    crossBraces: { quantity: crossBracesCount, specs: "Standard cross braces" },
+    guardrails: { quantity: guardrailsCount, specs: "Safety guardrails" },
+    basePlates: { quantity: basePlatesCount, specs: "Standard base plates" },
+    platforms: { quantity: platformsCount, specs: platformDetails.name },
+    screw: { quantity: screwCount, specs: "Adjustable base jacks" },
+    toeBoards: { quantity: toeboardsCount, specs: "Safety toe boards" },
+    outriggers: { quantity: outriggersCount, specs: "Stabilizing outriggers" },
+    ladders: { quantity: laddersCount, specs: "Access ladders" },
     totalComponents,
     weight: Math.round(totalWeight),
     loadCapacity: constants.loadCapacity,
-    dimensions: `${length.toFixed(1)}m x ${width.toFixed(1)}m x ${height.toFixed(1)}m`,
+    dimensions: `${wallLength.toFixed(1)}m x ${frameWidth.toFixed(1)}m x ${height.toFixed(1)}m`,
     area: Math.round(area),
-    type: typeName,
+    frameSize: frameSizeDetails.name,
+    platformLength: platformDetails.name,
+    workLevels: workLevels,
     safetyFactor: constants.safetyFactor
   };
 }

@@ -30,19 +30,38 @@ export type User = typeof users.$inferSelect;
 export type InsertWaitlist = z.infer<typeof insertWaitlistSchema>;
 export type Waitlist = typeof waitlist.$inferSelect;
 
-export type ScaffoldingType = "system" | "frame" | "tube";
+export type FrameSize = 
+  | "mason-frame-91x152" 
+  | "mason-frame-152x152" 
+  | "mason-frame-183x152" 
+  | "mason-frame-193x152"
+  | "mason-frame-193x91" 
+  | "mason-frame-193x107" 
+  | "mason-frame-198x152";
+
+export type PlatformLength = 
+  | "platform-213" 
+  | "platform-244" 
+  | "platform-305";
+
+export type WorkLevel = 1 | 2 | 3 | 4 | 5;
+
+export type ScaffoldingType = "mason-frame";
 
 export type CalculatorInputDimensions = {
   length: number;
-  width: number;
   height: number;
-  type: ScaffoldingType;
+  frameSize: FrameSize;
+  platformLength: PlatformLength;
+  workLevels: WorkLevel;
 };
 
 export type CalculatorInputArea = {
   area: number;
   height: number;
-  type: ScaffoldingType;
+  frameSize: FrameSize;
+  platformLength: PlatformLength;
+  workLevels: WorkLevel;
 };
 
 export type ScaffoldingComponent = {
@@ -51,19 +70,22 @@ export type ScaffoldingComponent = {
 };
 
 export type CalculationResult = {
-  standards: ScaffoldingComponent;
-  ledgers: ScaffoldingComponent;
-  transoms: ScaffoldingComponent;
+  frames: ScaffoldingComponent;
+  crossBraces: ScaffoldingComponent;
+  guardrails: ScaffoldingComponent;
   basePlates: ScaffoldingComponent;
-  guardRails: ScaffoldingComponent;
-  toeBoards: ScaffoldingComponent;
   platforms: ScaffoldingComponent;
-  couplers: ScaffoldingComponent;
+  screw: ScaffoldingComponent;
+  toeBoards: ScaffoldingComponent;
+  outriggers: ScaffoldingComponent;
+  ladders: ScaffoldingComponent;
   totalComponents: number;
   weight: number;
   loadCapacity: number;
   dimensions: string;
   area: number;
-  type: string;
+  frameSize: string;
+  platformLength: string;
+  workLevels: number;
   safetyFactor: number;
 };
