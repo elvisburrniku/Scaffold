@@ -83,6 +83,12 @@ export const FRAME_SIZES: Record<FrameSize, {
     description: "Extra-wide mason frame for maximum coverage",
     dimensions: { width: 198.12, height: 152.4 },
     weightKg: 24.3
+  },
+  "mason-frame-220x70": {
+    name: "Mason Frame 220 x 0.70 cm",
+    description: "Specialized narrow mason frame for unique applications",
+    dimensions: { width: 220, height: 70 },
+    weightKg: 18.7
   }
 };
 
@@ -106,6 +112,13 @@ export const PLATFORM_LENGTHS: Record<PlatformLength, {
     lengthCm: 243.84,
     widthCm: 60,
     weightKg: 17.8
+  },
+  "platform-250": {
+    name: "250 cm Plywood Platform",
+    description: "Metric standard platform for European specifications",
+    lengthCm: 250,
+    widthCm: 60,
+    weightKg: 18.5
   },
   "platform-305": {
     name: "304.8 cm Plywood Platform",

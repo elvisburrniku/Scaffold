@@ -37,11 +37,13 @@ export type FrameSize =
   | "mason-frame-193x152"
   | "mason-frame-193x91" 
   | "mason-frame-193x107" 
-  | "mason-frame-198x152";
+  | "mason-frame-198x152"
+  | "mason-frame-220x70";
 
 export type PlatformLength = 
   | "platform-213" 
   | "platform-244" 
+  | "platform-250"
   | "platform-305";
 
 export type WorkLevel = 1 | 2 | 3 | 4 | 5;
