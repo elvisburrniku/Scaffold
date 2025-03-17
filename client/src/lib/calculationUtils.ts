@@ -70,13 +70,19 @@ function calculateScaffolding(
   const framesCount = framesPerSide * buildingSides;
   
   const crossBracesCount = Math.ceil(framesCount * constants.crossBracesPerFrame);
-  const guardrailsCount = Math.ceil(perimeter * constants.guardrailsPerMeter * workLevels);
-  const basePlatesCount = Math.ceil(framesCount * constants.basePlatesPerFrame);
-  const platformsCount = Math.ceil(perimeter * constants.platformsPerMeter * workLevels);
-  const screwCount = Math.ceil(framesCount * constants.screwJacksPerFrame);
-  const toeboardsCount = Math.ceil(perimeter * constants.toeboardsPerMeter * workLevels);
-  const outriggersCount = Math.ceil(perimeter * constants.outriggersPerSide);
-  const laddersCount = Math.ceil(constants.laddersPerLevel * workLevels * (buildingSides > 1 ? buildingSides / 2 : 1));
+  // Calculate components per level
+  const guardrailsPerLevel = Math.ceil(perimeter * constants.guardrailsPerMeter);
+  const platformsPerLevel = Math.ceil(perimeter * constants.platformsPerMeter);
+  const toeboardsPerLevel = Math.ceil(perimeter * constants.toeboardsPerMeter);
+  
+  // Calculate total quantities accounting for all working levels
+  const guardrailsCount = guardrailsPerLevel * workLevels;
+  const basePlatesCount = framesCount; // One per frame
+  const platformsCount = platformsPerLevel * workLevels;
+  const screwCount = framesCount; // One per frame
+  const toeboardsCount = toeboardsPerLevel * workLevels;
+  const outriggersCount = 2 * buildingSides; // 2 per side
+  const laddersCount = Math.ceil(buildingSides / 2); // 1 ladder per 2 sides, minimum 1
   
   // Calculate weight
   const totalWeight = 
