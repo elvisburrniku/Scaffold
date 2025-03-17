@@ -205,7 +205,7 @@ export default function CalculatorForm({
                         <SelectItem value="mason-frame-193x91">Mason Frame 193.04 x 91.44 cm</SelectItem>
                         <SelectItem value="mason-frame-193x107">Mason Frame 193.04 cm x 106.68 cm</SelectItem>
                         <SelectItem value="mason-frame-198x152">Mason Frame 198.12 x 152.4 cm</SelectItem>
-                        <SelectItem value="mason-frame-220x70">Mason Frame 220 x 0.70 cm</SelectItem>
+                        <SelectItem value="mason-frame-220x70">Mason Frame 220 x 70 cm</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
