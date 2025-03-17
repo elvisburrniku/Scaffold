@@ -1,17 +1,31 @@
 import { CalculatorInputDimensions, CalculatorInputArea, CalculationResult, FrameSize, PlatformLength, WorkLevel } from "@shared/schema";
 import { CALCULATION_CONSTANTS, FRAME_SIZES, PLATFORM_LENGTHS } from "./constants";
 
+export type SideDimension = {
+  width: number;
+  height: number;
+};
+
+export type CalculatorInputDimensions = {
+  sides: SideDimension[];
+  frameSize: FrameSize;
+  platformLength: PlatformLength;
+  workLevels: WorkLevel;
+  buildingSides: number;
+};
+
 export function calculateFromDimensions(input: CalculatorInputDimensions): CalculationResult {
-  const { length, height, frameSize, platformLength, workLevels, buildingSides } = input;
-  
+  const { sides, frameSize, platformLength, workLevels, buildingSides } = input;
+
   // Calculate approximate area based on wall length and height (multiplied by sides)
-  const singleWallArea = length * height;
-  const totalArea = singleWallArea * buildingSides;
-  
+  let totalArea = 0;
+  sides.forEach(side => totalArea += side.width * side.height);
+
+
   return calculateScaffolding(
     totalArea, 
-    length, 
-    height, 
+    sides.reduce((sum, side) => sum + side.width,0), //approximated total length
+    sides[0].height, //using the height of the first side as a representative height.  This needs refinement.
     frameSize, 
     platformLength, 
     workLevels,
@@ -21,12 +35,12 @@ export function calculateFromDimensions(input: CalculatorInputDimensions): Calcu
 
 export function calculateFromArea(input: CalculatorInputArea): CalculationResult {
   const { area, height, frameSize, platformLength, workLevels, buildingSides } = input;
-  
+
   // Approximating length for wall length
   // Divide total area by number of sides to get area per side
   const areaPerSide = area / buildingSides;
   const approximatedLength = areaPerSide / height;
-  
+
   return calculateScaffolding(
     area, 
     approximatedLength, 
@@ -51,22 +65,22 @@ function calculateScaffolding(
   const constants = CALCULATION_CONSTANTS[scaffoldType];
   const frameSizeDetails = FRAME_SIZES[frameSize];
   const platformDetails = PLATFORM_LENGTHS[platformLength];
-  
+
   // Get width from the frame selection
   const frameWidth = frameSizeDetails.dimensions.width / 100; // Convert to meters
   const platformLengthValue = platformDetails.lengthCm / 100; // Convert to meters
-  
+
   // Calculate total perimeter based on number of sides
   const perimeter = wallLength * buildingSides;
-  
+
   // Calculate scaffold coverage area for just the wall sides
   const wallArea = wallLength * height; // Wall area in square meters
   const scaffoldCoverage = wallArea; // Total scaffold coverage needed
-  
+
   // Calculate quantities
   const framesPerSide = Math.ceil(wallLength * constants.framesPerMeter);
   const framesCount = framesPerSide * buildingSides;
-  
+
   const crossBracesCount = Math.ceil(framesCount * constants.crossBracesPerFrame);
   const guardrailsCount = Math.ceil(perimeter * constants.guardrailsPerMeter * workLevels);
   const basePlatesCount = Math.ceil(framesCount * constants.basePlatesPerFrame);
@@ -75,7 +89,7 @@ function calculateScaffolding(
   const toeboardsCount = Math.ceil(perimeter * constants.toeboardsPerMeter * workLevels);
   const outriggersCount = Math.ceil(perimeter * constants.outriggersPerSide);
   const laddersCount = Math.ceil(constants.laddersPerLevel * workLevels * (buildingSides > 1 ? buildingSides / 2 : 1));
-  
+
   // Calculate weight
   const totalWeight = 
     framesCount * constants.weightPerComponent.frame +
@@ -87,7 +101,7 @@ function calculateScaffolding(
     toeboardsCount * constants.weightPerComponent.toeboard +
     outriggersCount * constants.weightPerComponent.outrigger +
     laddersCount * constants.weightPerComponent.ladder;
-  
+
   // Format the result
   const totalComponents = 
     framesCount + 
@@ -99,7 +113,7 @@ function calculateScaffolding(
     toeboardsCount + 
     outriggersCount + 
     laddersCount;
-  
+
   // Calculate total scaffolding coverage area
   const totalScaffoldCoverage = scaffoldCoverage * framesCount;
 
@@ -141,7 +155,7 @@ export function printResults() {
 export function saveResults() {
   const resultsSection = document.getElementById('resultsSection');
   if (!resultsSection) return;
-  
+
   const content = resultsSection.innerHTML;
   const blob = new Blob([`
     <html>
@@ -161,7 +175,7 @@ export function saveResults() {
       </body>
     </html>
   `], { type: 'text/html' });
-  
+
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;

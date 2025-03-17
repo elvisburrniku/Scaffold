@@ -92,17 +92,33 @@ export default function CalculatorForm({
   const [activeTab, setActiveTab] = useState<string>("dimensions");
 
   // Dimensions form
+  const [sideDimensions, setSideDimensions] = useState<SideDimension[]>([{ width: 0, height: 0 }]);
+
   const dimensionsForm = useForm<DimensionsFormData>({
     resolver: zodResolver(dimensionsSchema),
     defaultValues: {
-      length: undefined,
-      height: undefined,
       frameSize: "mason-frame-152x152",
       platformLength: "platform-244",
       workLevels: 1,
-      buildingSides: 4,
+      buildingSides: 1,
     },
   });
+
+  // Update side dimensions when building sides changes
+  const watchBuildingSides = dimensionsForm.watch("buildingSides");
+  useEffect(() => {
+    const newSides = Array(watchBuildingSides).fill(null).map((_, i) => 
+      sideDimensions[i] || { width: 0, height: 0 }
+    );
+    setSideDimensions(newSides);
+  }, [watchBuildingSides]);
+
+  const handleDimensionsSubmit = (data: DimensionsFormData) => {
+    onDimensionsCalculate({ 
+      ...data, 
+      sides: sideDimensions 
+    });
+  };
 
   // Area form
   const areaForm = useForm<AreaFormData>({
@@ -144,43 +160,39 @@ export default function CalculatorForm({
               onSubmit={dimensionsForm.handleSubmit(handleDimensionsSubmit)} 
               className="grid md:grid-cols-2 gap-6"
             >
-              <FormField
-                control={dimensionsForm.control}
-                name="length"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Wall Length (m)</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        placeholder="Enter wall length" 
-                        {...field}
-                        min="1"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={dimensionsForm.control}
-                name="height"
-                render={({ field }) => (
-                  <FormItem>
+              {sideDimensions.map((side, index) => (
+                <div key={index} className="col-span-2 grid grid-cols-2 gap-4 p-4 border rounded-lg">
+                  <h3 className="col-span-2 font-medium">Side {index + 1}</h3>
+                  <div>
+                    <FormLabel>Width (m)</FormLabel>
+                    <Input
+                      type="number"
+                      placeholder="Enter width"
+                      value={side.width}
+                      onChange={(e) => {
+                        const newSides = [...sideDimensions];
+                        newSides[index].width = parseFloat(e.target.value);
+                        setSideDimensions(newSides);
+                      }}
+                      min="1"
+                    />
+                  </div>
+                  <div>
                     <FormLabel>Height (m)</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        placeholder="Enter height" 
-                        {...field}
-                        min="1"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                    <Input
+                      type="number"
+                      placeholder="Enter height"
+                      value={side.height}
+                      onChange={(e) => {
+                        const newSides = [...sideDimensions];
+                        newSides[index].height = parseFloat(e.target.value);
+                        setSideDimensions(newSides);
+                      }}
+                      min="1"
+                    />
+                  </div>
+                </div>
+              ))}
               
               <FormField
                 control={dimensionsForm.control}
