@@ -1,26 +1,50 @@
 import { CalculatorInputDimensions, CalculatorInputArea, CalculationResult, FrameSize, PlatformLength, WorkLevel } from "@shared/schema";
 import { CALCULATION_CONSTANTS, FRAME_SIZES, PLATFORM_LENGTHS } from "./constants";
 
+// Conversion constants
+const FEET_TO_METERS = 0.3048;
+const METERS_TO_FEET = 3.28084;
+
+function convertToMeters(value: number, unit: MeasurementUnit): number {
+  return unit === 'feet' ? value * FEET_TO_METERS : value;
+}
+
+function convertFromMeters(value: number, unit: MeasurementUnit): number {
+  return unit === 'feet' ? value * METERS_TO_FEET : value;
+}
+
 export function calculateFromDimensions(input: CalculatorInputDimensions): CalculationResult {
-  const { length, height, frameSize, platformLength, workLevels, buildingSides } = input;
+  const { length, height, frameSize, platformLength, workLevels, buildingSides, unit } = input;
+
+  // Convert input dimensions to meters for calculation
+  const lengthInMeters = convertToMeters(length, unit);
+  const heightInMeters = convertToMeters(height, unit);
 
   // Calculate approximate area based on wall length and height (multiplied by sides)
-  const singleWallArea = length * height;
+  const singleWallArea = lengthInMeters * heightInMeters;
   const totalArea = singleWallArea * buildingSides;
 
-  return calculateScaffolding(
+  const result = calculateScaffolding(
     totalArea, 
-    length, 
-    height, 
+    lengthInMeters, 
+    heightInMeters, 
     frameSize, 
     platformLength, 
     workLevels,
     buildingSides
   );
+
+  // Convert results back to original unit
+  return {
+    ...result,
+    area: convertFromMeters(result.area, unit),
+    scaffoldCoverage: convertFromMeters(result.scaffoldCoverage, unit),
+    dimensions: `${length.toFixed(2)} ${unit} × ${height.toFixed(2)} ${unit}`
+  };
 }
 
 export function calculateFromArea(input: CalculatorInputArea): CalculationResult {
-  const { area, height, frameSize, platformLength, workLevels, buildingSides } = input;
+  const { area, height, frameSize, platformLength, workLevels, buildingSides, unit } = input;
 
   // Approximating length for wall length
   // Divide total area by number of sides to get area per side
