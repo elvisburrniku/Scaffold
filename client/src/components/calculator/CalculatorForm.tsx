@@ -32,6 +32,7 @@ import { FRAME_SIZES, PLATFORM_LENGTHS } from "@/lib/constants";
 
 // Form validation schemas
 const dimensionsSchema = z.object({
+  unit: z.enum(["meters", "feet"]),
   length: z.coerce.number().min(0.1, "Length must be at least 0.1m").multipleOf(0.01),
   height: z.coerce.number().min(0.1, "Height must be at least 0.1m").multipleOf(0.01),
   frameSize: z.enum([
@@ -95,6 +96,7 @@ export default function CalculatorForm({
   const dimensionsForm = useForm<DimensionsFormData>({
     resolver: zodResolver(dimensionsSchema),
     defaultValues: {
+      unit: "meters",
       length: undefined,
       height: undefined,
       frameSize: "mason-frame-152x152",
@@ -137,13 +139,38 @@ export default function CalculatorForm({
           <TabsTrigger value="dimensions">Dimensions</TabsTrigger>
           <TabsTrigger value="area">Area</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="dimensions">
           <Form {...dimensionsForm}>
             <form 
               onSubmit={dimensionsForm.handleSubmit(handleDimensionsSubmit)} 
               className="grid md:grid-cols-2 gap-6"
             >
+              <FormField
+                control={dimensionsForm.control}
+                name="unit"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Unit</FormLabel>
+                    <Select 
+                      onValueChange={field.onChange} 
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select unit" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="meters">Meters</SelectItem>
+                        <SelectItem value="feet">Feet</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={dimensionsForm.control}
                 name="length"
@@ -162,7 +189,7 @@ export default function CalculatorForm({
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={dimensionsForm.control}
                 name="height"
@@ -181,7 +208,7 @@ export default function CalculatorForm({
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={dimensionsForm.control}
                 name="frameSize"
@@ -212,7 +239,7 @@ export default function CalculatorForm({
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={dimensionsForm.control}
                 name="platformLength"
@@ -239,7 +266,7 @@ export default function CalculatorForm({
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={dimensionsForm.control}
                 name="workLevels"
@@ -260,7 +287,7 @@ export default function CalculatorForm({
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={dimensionsForm.control}
                 name="buildingSides"
@@ -287,7 +314,7 @@ export default function CalculatorForm({
                   </FormItem>
                 )}
               />
-              
+
               <div className="md:col-span-2">
                 <Button 
                   type="submit" 
@@ -299,7 +326,7 @@ export default function CalculatorForm({
             </form>
           </Form>
         </TabsContent>
-        
+
         <TabsContent value="area">
           <Form {...areaForm}>
             <form 
@@ -324,7 +351,7 @@ export default function CalculatorForm({
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={areaForm.control}
                 name="height"
@@ -343,7 +370,7 @@ export default function CalculatorForm({
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={areaForm.control}
                 name="frameSize"
@@ -374,7 +401,7 @@ export default function CalculatorForm({
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={areaForm.control}
                 name="platformLength"
@@ -401,7 +428,7 @@ export default function CalculatorForm({
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={areaForm.control}
                 name="workLevels"
@@ -429,7 +456,7 @@ export default function CalculatorForm({
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={areaForm.control}
                 name="buildingSides"
@@ -456,7 +483,7 @@ export default function CalculatorForm({
                   </FormItem>
                 )}
               />
-              
+
               <div className="md:col-span-2">
                 <Button 
                   type="submit" 
