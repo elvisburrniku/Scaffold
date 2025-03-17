@@ -133,10 +133,6 @@ export default function CalculatorForm({
     },
   });
 
-  const handleDimensionsSubmit = (data: DimensionsFormData) => {
-    onDimensionsCalculate(data as unknown as CalculatorInputDimensions);
-  };
-
   const handleAreaSubmit = (data: AreaFormData) => {
     onAreaCalculate(data as unknown as CalculatorInputArea);
   };
