@@ -61,8 +61,6 @@ function calculateScaffolding(
   const perimeter = wallLength * buildingSides;
 
   // Calculate frame dimensions and quantities
-  const frameWidth = frameSizeDetails.dimensions.width / 100; // Convert cm to meters
-  const frameHeight = frameSizeDetails.dimensions.height / 100; // Convert cm to meters
   const framesPerSide = Math.ceil(wallLength * constants.framesPerMeter);
 
   // Calculate area per section (frame width x platform length)
