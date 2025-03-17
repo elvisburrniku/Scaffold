@@ -50,8 +50,6 @@ export type WorkLevel = 1 | 2 | 3 | 4 | 5;
 
 export type ScaffoldingType = "mason-frame";
 
-export type MeasurementUnit = 'meters' | 'feet';
-
 export type CalculatorInputDimensions = {
   length: number;
   height: number;
@@ -59,7 +57,6 @@ export type CalculatorInputDimensions = {
   platformLength: PlatformLength;
   workLevels: WorkLevel;
   buildingSides: number;
-  unit: MeasurementUnit;
 };
 
 export type CalculatorInputArea = {
@@ -69,7 +66,6 @@ export type CalculatorInputArea = {
   platformLength: PlatformLength;
   workLevels: WorkLevel;
   buildingSides: number;
-  unit: MeasurementUnit;
 };
 
 export type ScaffoldingComponent = {

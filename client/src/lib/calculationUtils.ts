@@ -1,56 +1,32 @@
 import { CalculatorInputDimensions, CalculatorInputArea, CalculationResult, FrameSize, PlatformLength, WorkLevel } from "@shared/schema";
 import { CALCULATION_CONSTANTS, FRAME_SIZES, PLATFORM_LENGTHS } from "./constants";
 
-// Conversion constants
-const FEET_TO_METERS = 0.3048;
-const METERS_TO_FEET = 3.28084;
-
-function convertToMeters(value: number, unit: MeasurementUnit): number {
-  return unit === 'feet' ? value * FEET_TO_METERS : value;
-}
-
-function convertFromMeters(value: number, unit: MeasurementUnit): number {
-  return unit === 'feet' ? value * METERS_TO_FEET : value;
-}
-
 export function calculateFromDimensions(input: CalculatorInputDimensions): CalculationResult {
-  const { length, height, frameSize, platformLength, workLevels, buildingSides, unit } = input;
-
-  // Convert input dimensions to meters for calculation
-  const lengthInMeters = convertToMeters(length, unit);
-  const heightInMeters = convertToMeters(height, unit);
-
+  const { length, height, frameSize, platformLength, workLevels, buildingSides } = input;
+  
   // Calculate approximate area based on wall length and height (multiplied by sides)
-  const singleWallArea = lengthInMeters * heightInMeters;
+  const singleWallArea = length * height;
   const totalArea = singleWallArea * buildingSides;
-
-  const result = calculateScaffolding(
+  
+  return calculateScaffolding(
     totalArea, 
-    lengthInMeters, 
-    heightInMeters, 
+    length, 
+    height, 
     frameSize, 
     platformLength, 
     workLevels,
     buildingSides
   );
-
-  // Convert results back to original unit
-  return {
-    ...result,
-    area: convertFromMeters(result.area, unit),
-    scaffoldCoverage: convertFromMeters(result.scaffoldCoverage, unit),
-    dimensions: `${length.toFixed(2)} ${unit} × ${height.toFixed(2)} ${unit}`
-  };
 }
 
 export function calculateFromArea(input: CalculatorInputArea): CalculationResult {
-  const { area, height, frameSize, platformLength, workLevels, buildingSides, unit } = input;
-
+  const { area, height, frameSize, platformLength, workLevels, buildingSides } = input;
+  
   // Approximating length for wall length
   // Divide total area by number of sides to get area per side
   const areaPerSide = area / buildingSides;
   const approximatedLength = areaPerSide / height;
-
+  
   return calculateScaffolding(
     area, 
     approximatedLength, 
@@ -75,96 +51,67 @@ function calculateScaffolding(
   const constants = CALCULATION_CONSTANTS[scaffoldType];
   const frameSizeDetails = FRAME_SIZES[frameSize];
   const platformDetails = PLATFORM_LENGTHS[platformLength];
-
-  // Get frame dimensions and convert to meters
-  const frameWidth = frameSizeDetails.dimensions.width / 100;
-  const frameHeight = frameSizeDetails.dimensions.height / 100;
-  const platformLengthValue = platformDetails.lengthCm / 100;
-
+  
+  // Get width from the frame selection
+  const frameWidth = frameSizeDetails.dimensions.width / 100; // Convert to meters
+  const platformLengthValue = platformDetails.lengthCm / 100; // Convert to meters
+  
   // Calculate total perimeter based on number of sides
   const perimeter = wallLength * buildingSides;
-
-  // Calculate frame dimensions and quantities
-  // For a 33ft wall they use 18 frames
-  const framesPerSide = Math.ceil((wallLength / 33) * 18); // Calibrated to match example of 18 frames for 33ft
+  
+  // Calculate scaffold coverage area
+  const scaffoldLength = wallLength; // 9.0m
+  const scaffoldHeight = height; // 6.0m
+  const scaffoldWidth = frameSizeDetails.dimensions.width / 100; // Frame width in meters
+  
+  // Calculate total area that needs scaffolding
+  const wallArea = scaffoldLength * scaffoldHeight; // Wall area in square meters
+  const scaffoldCoverage = wallArea; // Total scaffold coverage needed
+  
+  // Calculate quantities
+  const framesPerSide = Math.ceil(wallLength * constants.framesPerMeter);
   const framesCount = framesPerSide * buildingSides;
-
-  // Braces are ~1.67x the frame count in the example (30 braces / 18 frames)
-  const crossBracesCount = Math.ceil(framesCount * 1.67);
-
-  // Platforms are same as braces in example (30 platforms)
-  const platformsCount = crossBracesCount;
-
-  // Base plates (levelling jacks) are ~0.67x frame count (12 jacks / 18 frames)
-  const basePlatesCount = Math.ceil(framesCount * 0.67);
-
-  // Guardrail posts same as base plates in example (12 posts)
-  const guardrailPostsCount = basePlatesCount;
-
-  // Side guardrails based on length (20 in example)
-  const guardrailsCount = Math.ceil((wallLength / 10) * 6);
-
-  // End guardrails fixed at 4 like example
-  const endGuardrailsCount = 4;
-
-  // Wall attachments based on length (3 in example for 33m)
-  const wallAttachmentsCount = Math.ceil((wallLength / 11));
-
-  // Combined guardrails total
-  const totalGuardrailsCount = guardrailsCount + endGuardrailsCount;
-
-  // Toe boards approximately 1/3 of guardrails
-  const toeboardsCount = Math.ceil(totalGuardrailsCount / 3);
-
-  // Keep these calculations but adjust quantities
-  const screwCount = basePlatesCount; // Same as base plates
-  const outriggersCount = wallAttachmentsCount; // Same as wall attachments
-  const laddersCount = Math.ceil(workLevels * 0.5); // 1 ladder per 2 levels
-
-  // Calculate area per section (frame width x platform length)
-  const areaPerSection = frameWidth * platformLengthValue;
-
-  // Calculate total scaffold coverage
-  const scaffoldCoverage = areaPerSection * framesPerSide * buildingSides;
-
-  // Calculate total wall area being covered
-  const totalWallArea = wallLength * height * buildingSides;
-
-  // Calculate scaffold efficiency (coverage ratio)
-  const coverageRatio = scaffoldCoverage / totalWallArea;
-
-
+  
+  const crossBracesCount = Math.ceil(framesCount * constants.crossBracesPerFrame);
+  const guardrailsCount = Math.ceil(perimeter * constants.guardrailsPerMeter * workLevels);
+  const basePlatesCount = Math.ceil(framesCount * constants.basePlatesPerFrame);
+  const platformsCount = Math.ceil(perimeter * constants.platformsPerMeter * workLevels);
+  const screwCount = Math.ceil(framesCount * constants.screwJacksPerFrame);
+  const toeboardsCount = Math.ceil(perimeter * constants.toeboardsPerMeter * workLevels);
+  const outriggersCount = Math.ceil(perimeter * constants.outriggersPerSide);
+  const laddersCount = Math.ceil(constants.laddersPerLevel * workLevels * (buildingSides > 1 ? buildingSides / 2 : 1));
+  
   // Calculate weight
   const totalWeight = 
     framesCount * constants.weightPerComponent.frame +
     crossBracesCount * constants.weightPerComponent.crossBrace +
-    totalGuardrailsCount * constants.weightPerComponent.guardrail +
+    guardrailsCount * constants.weightPerComponent.guardrail +
     basePlatesCount * constants.weightPerComponent.basePlate +
     platformsCount * constants.weightPerComponent.platform +
     screwCount * constants.weightPerComponent.screwJack +
     toeboardsCount * constants.weightPerComponent.toeboard +
     outriggersCount * constants.weightPerComponent.outrigger +
     laddersCount * constants.weightPerComponent.ladder;
-
+  
   // Format the result
   const totalComponents = 
     framesCount + 
     crossBracesCount + 
-    totalGuardrailsCount + 
+    guardrailsCount + 
     basePlatesCount + 
     platformsCount + 
     screwCount + 
     toeboardsCount + 
     outriggersCount + 
     laddersCount;
-
+  
   // Calculate total scaffolding coverage area
   const totalScaffoldCoverage = scaffoldCoverage * framesCount;
 
   return {
     frames: { quantity: framesCount, specs: frameSizeDetails.name },
     crossBraces: { quantity: crossBracesCount, specs: "Standard cross braces" },
-    guardrails: { quantity: totalGuardrailsCount, specs: "Safety guardrails" },
+    guardrails: { quantity: guardrailsCount, specs: "Safety guardrails" },
     basePlates: { quantity: basePlatesCount, specs: "Standard base plates" },
     platforms: { quantity: platformsCount, specs: platformDetails.name },
     screw: { quantity: screwCount, specs: "Adjustable base jacks" },
@@ -199,7 +146,7 @@ export function printResults() {
 export function saveResults() {
   const resultsSection = document.getElementById('resultsSection');
   if (!resultsSection) return;
-
+  
   const content = resultsSection.innerHTML;
   const blob = new Blob([`
     <html>
@@ -219,7 +166,7 @@ export function saveResults() {
       </body>
     </html>
   `], { type: 'text/html' });
-
+  
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
