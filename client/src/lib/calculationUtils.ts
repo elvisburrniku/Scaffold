@@ -59,13 +59,8 @@ function calculateScaffolding(
   // Calculate total perimeter based on number of sides
   const perimeter = wallLength * buildingSides;
   
-  // Calculate scaffold coverage area
-  const scaffoldLength = wallLength; // 9.0m
-  const scaffoldHeight = height; // 6.0m
-  const scaffoldWidth = frameSizeDetails.dimensions.width / 100; // Frame width in meters
-  
-  // Calculate total area that needs scaffolding
-  const wallArea = scaffoldLength * scaffoldHeight; // Wall area in square meters
+  // Calculate scaffold coverage area for just the wall sides
+  const wallArea = wallLength * height; // Wall area in square meters
   const scaffoldCoverage = wallArea; // Total scaffold coverage needed
   
   // Calculate quantities
