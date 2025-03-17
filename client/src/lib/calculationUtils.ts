@@ -59,8 +59,10 @@ function calculateScaffolding(
   // Calculate total perimeter based on number of sides
   const perimeter = wallLength * buildingSides;
   
-  // Calculate the scaffold footprint (area coverage) per frame and platform
-  const scaffoldCoverage = frameWidth * platformLengthValue;
+  // Calculate the area covered by frame height and platform length
+  // Frame width becomes the working width, platform length becomes the coverage length
+  const frameHeightMeters = frameSizeDetails.dimensions.height / 100; // Convert cm to meters
+  const scaffoldCoverage = frameHeightMeters * platformLengthValue; // Area coverage in square meters
   
   // Calculate quantities
   const framesPerSide = Math.ceil(wallLength * constants.framesPerMeter);
