@@ -85,10 +85,9 @@ function calculateScaffolding(
   const perimeter = wallLength * buildingSides;
 
   // Calculate frame dimensions and quantities
-  // For a 33ft wall we use exactly 18 frames (standardized based on example)
+  // For a 33ft wall they use 18 frames
   const framesPerSide = Math.ceil((wallLength / 33) * 18); // Calibrated to match example of 18 frames for 33ft
-  // For single wall calculations, we don't multiply by building sides since example shows one side
-  const framesCount = buildingSides === 1 ? framesPerSide : framesPerSide * buildingSides;
+  const framesCount = framesPerSide * buildingSides;
 
   // Braces are ~1.67x the frame count in the example (30 braces / 18 frames)
   const crossBracesCount = Math.ceil(framesCount * 1.67);
