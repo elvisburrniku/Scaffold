@@ -88,6 +88,7 @@ export type CalculationResult = {
   loadCapacity: number;
   dimensions: string;
   area: number;
+  scaffoldCoverage: number;  // Total area covered by the scaffold frames and platforms
   frameSize: string;
   platformLength: string;
   workLevels: number;

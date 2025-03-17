@@ -120,6 +120,7 @@ export default function CalculationResults({ results }: CalculationResultsProps)
             <div className="bg-gray-50 rounded-lg p-4">
               <p><span className="font-medium">Dimensions:</span> {results.dimensions}</p>
               <p><span className="font-medium">Total Area:</span> {results.area} m²</p>
+              <p><span className="font-medium">Scaffold Coverage:</span> {results.scaffoldCoverage} m² <span className="text-xs text-gray-500">(frame × platform)</span></p>
               <p><span className="font-medium">Frame Size:</span> {results.frameSize}</p>
               <p><span className="font-medium">Platform Type:</span> {results.platformLength}</p>
               <p><span className="font-medium">Working Levels:</span> {results.workLevels}</p>

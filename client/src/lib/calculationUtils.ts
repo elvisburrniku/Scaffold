@@ -54,9 +54,13 @@ function calculateScaffolding(
   
   // Get width from the frame selection
   const frameWidth = frameSizeDetails.dimensions.width / 100; // Convert to meters
+  const platformLengthValue = platformDetails.lengthCm / 100; // Convert to meters
   
   // Calculate total perimeter based on number of sides
   const perimeter = wallLength * buildingSides;
+  
+  // Calculate the scaffold footprint (area coverage) per frame and platform
+  const scaffoldCoverage = frameWidth * platformLengthValue;
   
   // Calculate quantities
   const framesPerSide = Math.ceil(wallLength * constants.framesPerMeter);
@@ -95,6 +99,9 @@ function calculateScaffolding(
     outriggersCount + 
     laddersCount;
   
+  // Calculate total scaffolding coverage area
+  const totalScaffoldCoverage = scaffoldCoverage * framesCount;
+
   return {
     frames: { quantity: framesCount, specs: frameSizeDetails.name },
     crossBraces: { quantity: crossBracesCount, specs: "Standard cross braces" },
@@ -110,6 +117,7 @@ function calculateScaffolding(
     loadCapacity: constants.loadCapacity,
     dimensions: `${wallLength.toFixed(1)}m x ${frameWidth.toFixed(1)}m x ${height.toFixed(1)}m`,
     area: Math.round(area),
+    scaffoldCoverage: Math.round(totalScaffoldCoverage * 100) / 100, // Round to 2 decimal places
     frameSize: frameSizeDetails.name,
     platformLength: platformDetails.name,
     workLevels: workLevels,
