@@ -52,16 +52,13 @@ function calculateScaffolding(
   const frameSizeDetails = FRAME_SIZES[frameSize];
   const platformDetails = PLATFORM_LENGTHS[platformLength];
   
-  // Get width from the frame selection
-  const frameWidth = frameSizeDetails.dimensions.width / 100; // Convert to meters
-  const platformLengthValue = platformDetails.lengthCm / 100; // Convert to meters
+  // Get frame dimensions and convert to meters
+  const frameWidth = frameSizeDetails.dimensions.width / 100;
+  const frameHeight = frameSizeDetails.dimensions.height / 100;
+  const platformLengthValue = platformDetails.lengthCm / 100;
   
   // Calculate total perimeter based on number of sides
   const perimeter = wallLength * buildingSides;
-  
-  // Calculate scaffold coverage based on frame dimensions and platform length
-  const frameWidth = frameSizeDetails.dimensions.width / 100; // Convert cm to meters
-  const frameHeight = frameSizeDetails.dimensions.height / 100; // Convert cm to meters
   
   // Calculate area per section (frame width x platform length)
   const areaPerSection = frameWidth * platformLengthValue;
