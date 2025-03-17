@@ -3,11 +3,11 @@ import { CALCULATION_CONSTANTS, FRAME_SIZES, PLATFORM_LENGTHS } from "./constant
 
 export function calculateFromDimensions(input: CalculatorInputDimensions): CalculationResult {
   const { length, height, frameSize, platformLength, workLevels, buildingSides } = input;
-  
+
   // Calculate approximate area based on wall length and height (multiplied by sides)
   const singleWallArea = length * height;
   const totalArea = singleWallArea * buildingSides;
-  
+
   return calculateScaffolding(
     totalArea, 
     length, 
@@ -21,12 +21,12 @@ export function calculateFromDimensions(input: CalculatorInputDimensions): Calcu
 
 export function calculateFromArea(input: CalculatorInputArea): CalculationResult {
   const { area, height, frameSize, platformLength, workLevels, buildingSides } = input;
-  
+
   // Approximating length for wall length
   // Divide total area by number of sides to get area per side
   const areaPerSide = area / buildingSides;
   const approximatedLength = areaPerSide / height;
-  
+
   return calculateScaffolding(
     area, 
     approximatedLength, 
@@ -114,7 +114,7 @@ export function printResults() {
 export function saveResults() {
   const resultsSection = document.getElementById('resultsSection');
   if (!resultsSection) return;
-  
+
   const content = resultsSection.innerHTML;
   const blob = new Blob([`
     <html>
@@ -134,7 +134,7 @@ export function saveResults() {
       </body>
     </html>
   `], { type: 'text/html' });
-  
+
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
