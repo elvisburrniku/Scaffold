@@ -32,8 +32,8 @@ import { FRAME_SIZES, PLATFORM_LENGTHS } from "@/lib/constants";
 
 // Form validation schemas
 const dimensionsSchema = z.object({
-  length: z.coerce.number().min(1, "Length must be at least 1m"),
-  height: z.coerce.number().min(1, "Height must be at least 1m"),
+  length: z.coerce.number().min(0.1, "Length must be at least 0.1m").multipleOf(0.01),
+  height: z.coerce.number().min(0.1, "Height must be at least 0.1m").multipleOf(0.01),
   frameSize: z.enum([
     "mason-frame-91x152", 
     "mason-frame-152x152", 
@@ -246,23 +246,16 @@ export default function CalculatorForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Work Levels</FormLabel>
-                    <Select 
-                      onValueChange={(value) => field.onChange(parseInt(value))} 
-                      defaultValue={field.value.toString()}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select work levels" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="1">1 working level</SelectItem>
-                        <SelectItem value="2">2 working levels</SelectItem>
-                        <SelectItem value="3">3 working levels</SelectItem>
-                        <SelectItem value="4">4 working levels</SelectItem>
-                        <SelectItem value="5">5 working levels</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        placeholder="Enter work levels" 
+                        {...field}
+                        min="1"
+                        max="5"
+                        step="1"
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
