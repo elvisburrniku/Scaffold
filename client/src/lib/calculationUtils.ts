@@ -62,8 +62,21 @@ function calculateScaffolding(
   // Calculate the area covered by frame width x height and platform length
   const frameWidthMeters = frameSizeDetails.dimensions.width / 100; // Convert 91.44cm to meters
   const frameHeightMeters = frameSizeDetails.dimensions.height / 100; // Convert 152.4cm to meters
-  const frameArea = frameWidthMeters * frameHeightMeters; // Area per frame in square meters
-  const scaffoldCoverage = frameArea * (platformLengthValue / frameWidthMeters); // Total coverage area accounting for platform length
+  // Calculate scaffold coverage based on frame dimensions and platform length
+  const frameHeight = frameSizeDetails.dimensions.height / 100; // Convert to meters
+  const frameWidth = frameSizeDetails.dimensions.width / 100; // Convert to meters
+  
+  // Calculate area per section (frame width x platform length)
+  const areaPerSection = frameWidth * platformLengthValue;
+  
+  // Calculate total scaffold coverage
+  const scaffoldCoverage = areaPerSection * framesPerSide * buildingSides;
+  
+  // Calculate total wall area being covered
+  const totalWallArea = wallLength * height * buildingSides;
+  
+  // Calculate scaffold efficiency (coverage ratio)
+  const coverageRatio = scaffoldCoverage / totalWallArea;
   
   // Calculate quantities
   const framesPerSide = Math.ceil(wallLength * constants.framesPerMeter);
