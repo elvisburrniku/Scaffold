@@ -39,91 +39,64 @@ export function calculateFromArea(input: CalculatorInputArea): CalculationResult
 }
 
 function calculateScaffolding(
-  area: number, 
-  wallLength: number, 
-  height: number, 
-  frameSize: FrameSize, 
-  platformLength: PlatformLength, 
-  workLevels: WorkLevel,
-  buildingSides: number = 1
-): CalculationResult {
-  const scaffoldType = "mason-frame";
-  const constants = CALCULATION_CONSTANTS[scaffoldType];
-  const frameSizeDetails = FRAME_SIZES[frameSize];
-  const platformDetails = PLATFORM_LENGTHS[platformLength];
-  
-  // Get width from the frame selection
-  const frameWidth = frameSizeDetails.dimensions.width / 100; // Convert to meters
-  const platformLengthValue = platformDetails.lengthCm / 100; // Convert to meters
-  
-  // Calculate total perimeter based on number of sides
-  const perimeter = wallLength * buildingSides;
-  
-  // Calculate scaffold coverage area for just the wall sides
-  const wallArea = wallLength * height; // Wall area in square meters
-  const scaffoldCoverage = wallArea; // Total scaffold coverage needed
-  
-  // Calculate quantities
-  const framesPerSide = Math.ceil(wallLength * constants.framesPerMeter);
-  const framesCount = framesPerSide * buildingSides;
-  
-  const crossBracesCount = Math.ceil(framesCount * constants.crossBracesPerFrame);
-  const guardrailsCount = Math.ceil(perimeter * constants.guardrailsPerMeter * workLevels);
-  const basePlatesCount = Math.ceil(framesCount * constants.basePlatesPerFrame);
-  const platformsCount = Math.ceil(perimeter * constants.platformsPerMeter * workLevels);
-  const screwCount = Math.ceil(framesCount * constants.screwJacksPerFrame);
-  const toeboardsCount = Math.ceil(perimeter * constants.toeboardsPerMeter * workLevels);
-  const outriggersCount = Math.ceil(perimeter * constants.outriggersPerSide);
-  const laddersCount = Math.ceil(constants.laddersPerLevel * workLevels * (buildingSides > 1 ? buildingSides / 2 : 1));
-  
-  // Calculate weight
-  const totalWeight = 
-    framesCount * constants.weightPerComponent.frame +
-    crossBracesCount * constants.weightPerComponent.crossBrace +
-    guardrailsCount * constants.weightPerComponent.guardrail +
-    basePlatesCount * constants.weightPerComponent.basePlate +
-    platformsCount * constants.weightPerComponent.platform +
-    screwCount * constants.weightPerComponent.screwJack +
-    toeboardsCount * constants.weightPerComponent.toeboard +
-    outriggersCount * constants.weightPerComponent.outrigger +
-    laddersCount * constants.weightPerComponent.ladder;
-  
-  // Format the result
-  const totalComponents = 
-    framesCount + 
-    crossBracesCount + 
-    guardrailsCount + 
-    basePlatesCount + 
-    platformsCount + 
-    screwCount + 
-    toeboardsCount + 
-    outriggersCount + 
-    laddersCount;
-  
-  // Calculate total scaffolding coverage area
-  const totalScaffoldCoverage = scaffoldCoverage * framesCount;
+  wallLength: number,
+  height: number,
+  frameWidthCm: number,
+  platformLengthCm: number,
+  workLevels: number,
+  addTopGuardrails: boolean = true
+) {
+  const frameWidthM = frameWidthCm / 100;
+  const platformLengthM = platformLengthCm / 100;
+
+  const framesPerLevel = Math.ceil(wallLength / frameWidthM) + 1;
+  const totalFrames = framesPerLevel * workLevels;
+
+  const baysPerLevel = framesPerLevel - 1;
+  const totalBraces = baysPerLevel * workLevels * 2;
+
+  const platformsPerBay = 3;
+  const totalPlatforms = baysPerLevel * platformsPerBay * workLevels;
+
+  const totalJacks = framesPerLevel;
+
+  let guardrailPosts = 0;
+  let sideGuardrails = 0;
+  let endGuardrails = 0;
+
+  if (addTopGuardrails) {
+    guardrailPosts = framesPerLevel;
+    sideGuardrails = baysPerLevel * 2;
+    endGuardrails = 4; // 2 ends × 2 guardrails
+  }
+
+  const wallAttachmentsPerLevel = Math.ceil(wallLength / 4);
+  const totalWallAttachments = wallAttachmentsPerLevel * workLevels;
 
   return {
-    frames: { quantity: framesCount, specs: frameSizeDetails.name },
-    crossBraces: { quantity: crossBracesCount, specs: "Standard cross braces" },
-    guardrails: { quantity: guardrailsCount, specs: "Safety guardrails" },
-    basePlates: { quantity: basePlatesCount, specs: "Standard base plates" },
-    platforms: { quantity: platformsCount, specs: platformDetails.name },
-    screw: { quantity: screwCount, specs: "Adjustable base jacks" },
-    toeBoards: { quantity: toeboardsCount, specs: "Safety toe boards" },
-    outriggers: { quantity: outriggersCount, specs: "Stabilizing outriggers" },
-    ladders: { quantity: laddersCount, specs: "Access ladders" },
-    totalComponents,
-    weight: Math.round(totalWeight),
-    loadCapacity: constants.loadCapacity,
-    dimensions: `${wallLength.toFixed(1)}m x ${frameWidth.toFixed(1)}m x ${height.toFixed(1)}m`,
-    area: Math.round(area),
-    scaffoldCoverage: Math.round(totalScaffoldCoverage * 100) / 100, // Round to 2 decimal places
-    frameSize: frameSizeDetails.name,
-    platformLength: platformDetails.name,
-    workLevels: workLevels,
-    buildingSides: buildingSides,
-    safetyFactor: constants.safetyFactor
+    frames: { quantity: totalFrames, specs: `Frames ${(frameWidthCm / 2.54).toFixed(0)} in` },
+    braces: { quantity: totalBraces, specs: `Braces standard` },
+    platforms: { quantity: totalPlatforms, specs: `Platforms ${(platformLengthCm / 30.48).toFixed(0)} ft plywood` },
+    levellingJacks: { quantity: totalJacks, specs: "Levelling jacks standard" },
+    guardrailPosts: { quantity: guardrailPosts, specs: "Guardrail posts standard" },
+    sideGuardrails: { quantity: sideGuardrails, specs: "Side guardrails standard" },
+    endGuardrails: { quantity: endGuardrails, specs: "End guardrails standard" },
+    wallAttachments: { quantity: totalWallAttachments, specs: "Wall attachments standard" },
+    totalComponents:
+      totalFrames +
+      totalBraces +
+      totalPlatforms +
+      totalJacks +
+      guardrailPosts +
+      sideGuardrails +
+      endGuardrails +
+      totalWallAttachments,
+    dimensions: {
+      length: wallLength.toFixed(2) + ' m',
+      height: height.toFixed(2) + ' m',
+      frameSize: `${(frameWidthCm / 2.54).toFixed(0)} in × ${(frameWidthCm / 2.54).toFixed(0)} in`,
+      platformLength: (platformLengthCm / 30.48).toFixed(0) + ' ft'
+    }
   };
 }
 
