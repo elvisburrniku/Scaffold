@@ -2,6 +2,7 @@ import { CalculationResult } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { formatNumber, printResults, saveResults } from "@/lib/calculationUtils";
 import { Printer, Save, Package } from "lucide-react";
+import ScaffoldingVisualization3D from '../sections/ScaffoldingVisualization3D';
 
 interface CalculationResultsProps {
   results: CalculationResult;
@@ -11,6 +12,10 @@ export default function CalculationResults({ results }: CalculationResultsProps)
   return (
     <div id="resultsSection">
       <h3 className="text-xl font-semibold mb-4">Calculation Results</h3>
+      
+      <div className="mb-8">
+        <ScaffoldingVisualization3D result={results} className="rounded-lg shadow-lg" />
+      </div>
       
       <div className="grid md:grid-cols-2 gap-8">
         <div>
@@ -36,11 +41,6 @@ export default function CalculationResults({ results }: CalculationResultsProps)
                   <td className="text-right py-2 text-xs">{results.crossBraces.specs}</td>
                 </tr>
                 <tr className="border-b border-gray-200">
-                  <td className="py-2">Guardrails</td>
-                  <td className="text-right py-2">{results.guardrails.quantity}</td>
-                  <td className="text-right py-2 text-xs">{results.guardrails.specs}</td>
-                </tr>
-                <tr className="border-b border-gray-200">
                   <td className="py-2">Base Plates</td>
                   <td className="text-right py-2">{results.basePlates.quantity}</td>
                   <td className="text-right py-2 text-xs">{results.basePlates.specs}</td>
@@ -56,20 +56,31 @@ export default function CalculationResults({ results }: CalculationResultsProps)
                   <td className="text-right py-2 text-xs">{results.screw.specs}</td>
                 </tr>
                 <tr className="border-b border-gray-200">
-                  <td className="py-2">Toe Boards</td>
-                  <td className="text-right py-2">{results.toeBoards.quantity}</td>
-                  <td className="text-right py-2 text-xs">{results.toeBoards.specs}</td>
-                </tr>
-                <tr className="border-b border-gray-200">
-                  <td className="py-2">Outriggers</td>
-                  <td className="text-right py-2">{results.outriggers.quantity}</td>
-                  <td className="text-right py-2 text-xs">{results.outriggers.specs}</td>
-                </tr>
-                <tr className="border-b border-gray-200">
                   <td className="py-2">Ladders</td>
                   <td className="text-right py-2">{results.ladders.quantity}</td>
                   <td className="text-right py-2 text-xs">{results.ladders.specs}</td>
                 </tr>
+                <tr className="border-b border-gray-200">
+                  <td className="py-2">Leg holders</td>
+                  <td className="text-right py-2">{results.legHolders.quantity}</td>
+                  <td className="text-right py-2 text-xs">{results.legHolders.specs}</td>
+                </tr>
+                <tr className="border-b border-gray-200">
+                  <td className="py-2">Wall attachments</td>
+                  <td className="text-right py-2">{results.wallAttachments.quantity}</td>
+                  <td className="text-right py-2 text-xs">{results.wallAttachments.specs}</td>
+                </tr>
+                <tr className="border-b border-gray-200">
+                  <td className="py-2">Wall attachments tie brackets</td>
+                  <td className="text-right py-2">{results.wallAttachmentTieBrackets.quantity}</td>
+                  <td className="text-right py-2 text-xs">{results.wallAttachmentTieBrackets.specs}</td>
+                </tr>
+                <tr className="border-b border-gray-200">
+                  <td className="py-2">Side Guardrails</td>
+                  <td className="text-right py-2">{results.sideGuardrails.quantity}</td>
+                  <td className="text-right py-2 text-xs">{results.sideGuardrails.specs}</td>
+                </tr>
+                
               </tbody>
               <tfoot>
                 <tr className="bg-gray-100">
@@ -99,22 +110,12 @@ export default function CalculationResults({ results }: CalculationResultsProps)
               onClick={saveResults}
               className="bg-[#38B2AC] hover:bg-[#38B2AC]/90 text-white flex items-center"
             >
-              <Save className="mr-2 h-4 w-4" /> Save
+              <Save className="mr-2 h-4 w-4" /> Get a quote
             </Button>
           </div>
         </div>
         
         <div>
-          <h4 className="font-semibold text-lg mb-3">Visualization</h4>
-          <div className="bg-gray-50 rounded-lg p-4 h-[300px]">
-            <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
-              <div className="text-center">
-                <Package className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-                <p className="text-gray-500">Scaffolding visualization preview</p>
-                <p className="text-xs text-gray-400 mt-2">(Full 3D visualization available in the full version)</p>
-              </div>
-            </div>
-          </div>
           <div className="mt-4">
             <h4 className="font-semibold text-lg mb-2">Project Summary</h4>
             <div className="bg-gray-50 rounded-lg p-4">
@@ -125,7 +126,6 @@ export default function CalculationResults({ results }: CalculationResultsProps)
               <p><span className="font-medium">Platform Type:</span> {results.platformLength}</p>
               <p><span className="font-medium">Working Levels:</span> {results.workLevels}</p>
               <p><span className="font-medium">Building Sides:</span> {results.buildingSides || 1}</p>
-              <p><span className="font-medium">Safety Factor:</span> {results.safetyFactor}</p>
             </div>
           </div>
         </div>

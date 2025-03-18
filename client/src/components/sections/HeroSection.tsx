@@ -16,8 +16,8 @@ export default function HeroSection() {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               <span className="text-primary">Scaffold</span>Pro
             </h1>
-            <h2 className="text-2xl md:text-3xl font-semibold mb-6">Professional Scaffolding Calculator</h2>
-            <p className="text-lg mb-8">
+            <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-stone-800">Professional Scaffolding Calculator</h2>
+            <p className="text-lg mb-8 text-stone-800">
               Plan your construction projects with precision. Our advanced calculator helps you determine the exact scaffolding components needed for any project.
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
@@ -32,7 +32,7 @@ export default function HeroSection() {
                 variant="outline" 
                 className="bg-white hover:bg-gray-100 text-secondary font-semibold px-6 py-6 h-auto"
               >
-                <a href="#waitlist">Join Waitlist</a>
+                <a className="text-stone-800 border-white" href="#waitlist">Join Waitlist</a>
               </Button>
             </div>
           </div>

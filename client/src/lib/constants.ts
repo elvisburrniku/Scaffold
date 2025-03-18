@@ -162,7 +162,10 @@ export const CALCULATION_CONSTANTS: Record<ScaffoldingType, {
       screwJack: 3,
       toeboard: 4,
       outrigger: 8,
-      ladder: 15
+      ladder: 15,
+      legHolder: 2.5,
+      wallAttachment: 0.5,
+      sideGuardrail: 4.5,
     },
     loadCapacity: 675,  // kg/m²
     safetyFactor: 1.4

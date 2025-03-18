@@ -94,4 +94,8 @@ export type CalculationResult = {
   workLevels: number;
   buildingSides: number;
   safetyFactor: number;
+  legHolders: ScaffoldingComponent;
+  wallAttachments: ScaffoldingComponent;
+  wallAttachmentTieBrackets: ScaffoldingComponent;
+  sideGuardrails: ScaffoldingComponent;
 };

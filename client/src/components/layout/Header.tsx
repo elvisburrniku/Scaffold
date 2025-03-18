@@ -16,13 +16,13 @@ export default function Header() {
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
             <HardHat className="text-primary h-8 w-8 mr-2" />
-            <span className="font-bold text-xl text-secondary">ScaffoldPro</span>
+            <span className="font-bold text-xl text-stone-800">ScaffoldPro</span>
           </div>
           
           {/* Mobile menu button */}
           <button 
             type="button" 
-            className="lg:hidden text-secondary focus:outline-none"
+            className="lg:hidden text-stone-800 focus:outline-none"
             onClick={toggleMobileMenu}
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -35,10 +35,10 @@ export default function Header() {
           
           {/* Desktop navigation */}
           <nav className="hidden lg:flex space-x-8">
-            <a href="#features" className="text-secondary hover:text-primary transition-colors">Features</a>
-            <a href="#calculator" className="text-secondary hover:text-primary transition-colors">Calculator</a>
-            <a href="#types" className="text-secondary hover:text-primary transition-colors">Scaffolding Types</a>
-            <a href="#waitlist" className="text-secondary hover:text-primary transition-colors">Join Waitlist</a>
+            <a href="#features" className="text-stone-800 hover:text-primary transition-colors">Features</a>
+            <a href="#calculator" className="text-stone-800 hover:text-primary transition-colors">Calculator</a>
+            <a href="#types" className="text-stone-800 hover:text-primary transition-colors">Scaffolding Types</a>
+            <a href="#waitlist" className="text-stone-800 hover:text-primary transition-colors">Join Waitlist</a>
           </nav>
           
           {/* Desktop CTA */}
@@ -55,28 +55,28 @@ export default function Header() {
         <div className="flex flex-col space-y-3">
           <a 
             href="#features" 
-            className="text-secondary hover:text-primary transition-colors py-2"
+            className="text-stone-800 hover:text-primary transition-colors py-2"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Features
           </a>
           <a 
             href="#calculator" 
-            className="text-secondary hover:text-primary transition-colors py-2"
+            className="text-stone-800 hover:text-primary transition-colors py-2"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Calculator
           </a>
           <a 
             href="#types" 
-            className="text-secondary hover:text-primary transition-colors py-2"
+            className="text-stone-800 hover:text-primary transition-colors py-2"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Scaffolding Types
           </a>
           <a 
             href="#waitlist" 
-            className="text-secondary hover:text-primary transition-colors py-2"
+            className="text-stone-800 hover:text-primary transition-colors py-2"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Join Waitlist
