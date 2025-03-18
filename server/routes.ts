@@ -1,5 +1,7 @@
-import type { Express } from "express";
+import type { Express, Request } from "express";
 import { createServer, type Server } from "http";
+import { auth as firebaseAuth } from "firebase-admin";
+import { getAuth } from "firebase-admin/auth";
 import { storage } from "./storage";
 import { insertWaitlistSchema } from "@shared/schema";
 import { fromZodError } from "zod-validation-error";

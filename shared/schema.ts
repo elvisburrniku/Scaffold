@@ -4,8 +4,10 @@ import { z } from "zod";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+  firebaseUid: text("firebase_uid").notNull().unique(),
+  email: text("email").notNull().unique(),
+  isAdmin: boolean("is_admin").default(false).notNull(),
+  isApproved: boolean("is_approved").default(false).notNull(),
 });
 
 export const waitlist = pgTable("waitlist", {
