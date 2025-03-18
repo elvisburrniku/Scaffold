@@ -14,12 +14,34 @@ function Router() {
   );
 }
 
-function App() {
+import { AuthProvider } from './lib/AuthContext';
+import { Auth } from './components/Auth';
+import { useAuth } from './lib/AuthContext';
+
+function AppContent() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <Auth />;
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <Router />
       <Toaster />
     </QueryClientProvider>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 
